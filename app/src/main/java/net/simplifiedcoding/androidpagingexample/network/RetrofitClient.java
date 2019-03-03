@@ -1,12 +1,11 @@
-package net.simplifiedcoding.androidpagingexample;
+package net.simplifiedcoding.androidpagingexample.network;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "https://api.stackexchange.com/2.2/";
+    private static final String BASE_URL = "https://api.flickr.com/services/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 

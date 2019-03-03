@@ -1,4 +1,4 @@
-package net.simplifiedcoding.androidpagingexample;
+package net.simplifiedcoding.androidpagingexample.Adapter;
 
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
@@ -14,11 +14,30 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-public class ItemAdapter extends PagedListAdapter<Item, ItemAdapter.ItemViewHolder> {
+import net.simplifiedcoding.androidpagingexample.Model.PhotoItem;
+import net.simplifiedcoding.androidpagingexample.R;
 
+public class ItemAdapter extends PagedListAdapter<PhotoItem, ItemAdapter.ItemViewHolder> {
+
+    private static final String BASE_URL = "https://farm5.staticflickr.com/";
+    private static final String SLASH = "/";
+    private static final String UNDER_SCORE = "_";
+    private static final String DOT_JPG = ".jpg";
+    private static DiffUtil.ItemCallback<PhotoItem> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<PhotoItem>() {
+                @Override
+                public boolean areItemsTheSame(PhotoItem oldItem, PhotoItem newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(PhotoItem oldItem, PhotoItem newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
     private Context mCtx;
 
-    ItemAdapter(Context mCtx) {
+    public ItemAdapter(Context mCtx) {
         super(DIFF_CALLBACK);
         this.mCtx = mCtx;
     }
@@ -32,30 +51,18 @@ public class ItemAdapter extends PagedListAdapter<Item, ItemAdapter.ItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        Item item = getItem(position);
+        PhotoItem item = getItem(position);
 
         if (item != null) {
-            holder.textView.setText(item.owner.display_name);
+            holder.textView.setText(item.getTitle());
+            String imageUrl = BASE_URL + item.getServer() + SLASH + item.getId() + UNDER_SCORE + item.getSecret() + DOT_JPG;
             Glide.with(mCtx)
-                    .load(item.owner.profile_image)
+                    .load(imageUrl)
                     .into(holder.imageView);
-        }else{
+        } else {
             Toast.makeText(mCtx, "Item is null", Toast.LENGTH_LONG).show();
         }
     }
-
-    private static DiffUtil.ItemCallback<Item> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Item>() {
-                @Override
-                public boolean areItemsTheSame(Item oldItem, Item newItem) {
-                    return oldItem.question_id == newItem.question_id;
-                }
-
-                @Override
-                public boolean areContentsTheSame(Item oldItem, Item newItem) {
-                    return oldItem.equals(newItem);
-                }
-            };
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
 

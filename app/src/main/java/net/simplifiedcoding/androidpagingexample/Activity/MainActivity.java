@@ -1,7 +1,6 @@
-package net.simplifiedcoding.androidpagingexample;
+package net.simplifiedcoding.androidpagingexample.Activity;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
@@ -9,13 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import net.simplifiedcoding.androidpagingexample.Adapter.ItemAdapter;
+import net.simplifiedcoding.androidpagingexample.DataSource.ItemViewModel;
+import net.simplifiedcoding.androidpagingexample.Model.PhotoItem;
+import net.simplifiedcoding.androidpagingexample.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -34,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
         final ItemAdapter adapter = new ItemAdapter(this);
 
-        itemViewModel.itemPagedList.observe(this, new Observer<PagedList<Item>>() {
+        itemViewModel.itemPagedList.observe(this, new Observer<PagedList<PhotoItem>>() {
             @Override
-            public void onChanged(@Nullable PagedList<Item> items) {
+            public void onChanged(@Nullable PagedList<PhotoItem> items) {
                 adapter.submitList(items);
             }
         });
